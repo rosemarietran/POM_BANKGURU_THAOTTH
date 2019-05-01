@@ -68,6 +68,10 @@ public class Account_Level_01_StepByStep_TopDown {
 		/* Step 05 - Check UserID infor displayed in Home Page */
 		Assert.assertTrue(driver.findElement(By.xpath("//td[text()='Manger Id : " + userIdInfor + "']")).isDisplayed());
 	}
+	
+	public void TC_03_CreateNewCustomer() {
+		
+	}
 
 	@AfterClass
 	public void afterClass() {
