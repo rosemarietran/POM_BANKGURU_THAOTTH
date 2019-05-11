@@ -1,9 +1,10 @@
-package pageObjects;
+package bankguru.pageObjects;
 
 import org.openqa.selenium.WebDriver;
 
 import bankguru.LoginPageUI;
 import commons.AbstractPage;
+import commons.PageFactoryManager;
 
 public class LoginPageObject extends AbstractPage {
 	private WebDriver driver;
@@ -33,14 +34,16 @@ public class LoginPageObject extends AbstractPage {
 
 	}
 
-	public void clickToLoginButton() {
+	public HomePageObject clickToLoginButton() {
 		waitForElementVisible(driver, LoginPageUI.LOGIN_BUTTON);
 		clickToElement(driver, LoginPageUI.LOGIN_BUTTON);
+		return PageFactoryManager.getHomePage(driver);
 
 	}
 
-	public void clickToHereLink() {
+	public RegisterPageObject clickToHereLink() {
 		waitForElementVisible(driver, LoginPageUI.HERE_LINK);
 		clickToElement(driver, LoginPageUI.HERE_LINK);
+		return PageFactoryManager.getRegisterPage(driver);
 	}
 }

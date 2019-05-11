@@ -10,12 +10,13 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import bankguru.pageFactory.LoginPageFactory;
 import bankguru.pageObjects.HomePageObject;
 import bankguru.pageObjects.LoginPageObject;
 import bankguru.pageObjects.RegisterPageObject;
 import commons.AbstractPage;
 
-public class Account_Level_03_ApplyPageObject {
+public class Account_Level_04_PageFactory {
 
 	WebDriver driver;
 	String loginPageUrl, userIdInfor, passwordInfor, email;
@@ -23,6 +24,7 @@ public class Account_Level_03_ApplyPageObject {
 	LoginPageObject loginPage;
 	RegisterPageObject registerPage;
 	HomePageObject homePage;
+	LoginPageFactory loginPageFactory;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -37,11 +39,22 @@ public class Account_Level_03_ApplyPageObject {
 
 	@Test
 	public void TC_01_RegisterToSystem() {
-		loginPage = new LoginPageObject(driver);
-		Assert.assertTrue(loginPage.isLoginFormDisplayed());
-		loginPageUrl = loginPage.getLoginPageUrl();
-		System.out.println("Login page URL: " + loginPageUrl);
-		loginPage.clickToHereLink();
+		//PageObject
+		
+		//loginPage = new LoginPageObject(driver);
+		
+		
+		//PageFactory (Selenium)
+		loginPageFactory = new LoginPageFactory(driver);
+		
+		//Assert.assertTrue(loginPage.isLoginFormDisplayed());
+		Assert.assertTrue(loginPageFactory.isLoginFormDisplayed());
+		
+		//loginPageUrl = loginPage.getLoginPageUrl();
+		loginPageUrl = loginPageFactory.getLoginPageUrl();
+		
+		//loginPage.clickToHereLink();
+		loginPageFactory.clickToHereLink();
 		
 		registerPage = new RegisterPageObject(driver);
 		Assert.assertTrue(registerPage.isRegisterPageDisplayed());

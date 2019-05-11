@@ -14,8 +14,9 @@ import bankguru.pageObjects.HomePageObject;
 import bankguru.pageObjects.LoginPageObject;
 import bankguru.pageObjects.RegisterPageObject;
 import commons.AbstractPage;
+import commons.PageFactoryManager;
 
-public class Account_Level_03_ApplyPageObject {
+public class Account_Level_05_PageFactoryManager_SingletonPattern {
 
 	WebDriver driver;
 	String loginPageUrl, userIdInfor, passwordInfor, email;
@@ -33,17 +34,18 @@ public class Account_Level_03_ApplyPageObject {
 		//abstractPage.openAnyUrl(driver, "http://demo.guru99.com/v4/");
 		driver.get("http://demo.guru99.com/v4/");
 		email = "selenium09" + randomNumber() + "@gmail.com";
+//		loginPage = new LoginPageObject(driver);
+		loginPage = PageFactoryManager.getLoginPage(driver);
 	}
 
 	@Test
 	public void TC_01_RegisterToSystem() {
-		loginPage = new LoginPageObject(driver);
+		
 		Assert.assertTrue(loginPage.isLoginFormDisplayed());
 		loginPageUrl = loginPage.getLoginPageUrl();
 		System.out.println("Login page URL: " + loginPageUrl);
-		loginPage.clickToHereLink();
+		registerPage = loginPage.clickToHereLink();
 		
-		registerPage = new RegisterPageObject(driver);
 		Assert.assertTrue(registerPage.isRegisterPageDisplayed());
 		registerPage.inputToEmailIDTextbox(email);
 		registerPage.clickToSubmitButton();
@@ -53,17 +55,17 @@ public class Account_Level_03_ApplyPageObject {
 
 	@Test
 	public void TC_02_LoginToSystem() {
-		registerPage.openLoginPage(loginPageUrl);
-		loginPage = new LoginPageObject(driver);
+		loginPage = registerPage.openLoginPage(loginPageUrl);
 		Assert.assertTrue(loginPage.isLoginFormDisplayed());
 		loginPage.inputToUserIDTextbox(userIdInfor);
 		loginPage.inputToPasswordTextbox(passwordInfor);
-		loginPage.clickToLoginButton();
+		homePage = loginPage.clickToLoginButton();
 		
-		homePage = new HomePageObject(driver);
 		Assert.assertTrue(homePage.isWelcomeMessageDisplayed());
 		Assert.assertTrue(homePage.isUserIDDisplayed(userIdInfor));
 
+		loginPage = homePage.clickToLogoutLink();
+		Assert.assertTrue(loginPage.isLoginFormDisplayed());
 	}
 
 	@AfterClass

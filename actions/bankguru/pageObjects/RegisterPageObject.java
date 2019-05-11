@@ -1,9 +1,10 @@
-package pageObjects;
+package bankguru.pageObjects;
 
 import org.openqa.selenium.WebDriver;
 
 import bankguru.RegisterPageUI;
 import commons.AbstractPage;
+import commons.PageFactoryManager;
 
 public class RegisterPageObject extends AbstractPage {
 	private WebDriver driver;
@@ -38,8 +39,9 @@ public class RegisterPageObject extends AbstractPage {
 		return getTextElement(driver, RegisterPageUI.PASSWORD_TEXT);
 	}
 
-	public void openLoginPage(String loginPageUrl) {
+	public LoginPageObject openLoginPage(String loginPageUrl) {
 		openAnyUrl(driver, loginPageUrl);
+		return PageFactoryManager.getLoginPage(driver);
 	}
 	
 }
