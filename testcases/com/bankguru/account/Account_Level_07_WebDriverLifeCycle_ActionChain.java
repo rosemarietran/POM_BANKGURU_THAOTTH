@@ -14,14 +14,17 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import bankguru.pageObjects.DepositPageObject;
+import bankguru.pageObjects.FundTransferPageObject;
 import bankguru.pageObjects.HomePageObject;
 import bankguru.pageObjects.LoginPageObject;
+import bankguru.pageObjects.NewAccountPageObject;
 import bankguru.pageObjects.RegisterPageObject;
 import commons.AbstractPage;
 import commons.AbstractTest;
 import commons.PageFactoryManager;
 
-public class Account_Level_06_MultipleBrowser_ParallelTesting extends AbstractTest{
+public class Account_Level_07_WebDriverLifeCycle_ActionChain extends AbstractTest {
 
 	WebDriver driver;
 	String loginPageUrl, userIdInfor, passwordInfor, email;
@@ -29,11 +32,33 @@ public class Account_Level_06_MultipleBrowser_ParallelTesting extends AbstractTe
 	LoginPageObject loginPage;
 	RegisterPageObject registerPage;
 	HomePageObject homePage;
+	NewAccountPageObject newAccountPage;
+	DepositPageObject depositPage;
+	FundTransferPageObject fundTransferPage;
 
 	@Parameters("browser")
 	@BeforeClass
 	public void beforeClass(String browserName) {
-		driver = openMultiBrowser(browserName);
+		if (browserName.equalsIgnoreCase("firefox")) {
+			System.setProperty("webdriver.gecko.driver", ".\\resources\\geckodriver.exe");
+			driver = new FirefoxDriver();
+		} else if (browserName.equalsIgnoreCase("chrome")) {
+			System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
+			driver = new ChromeDriver();
+		} else if (browserName.equalsIgnoreCase("ie")) {
+			System.setProperty("webdriver.ie.driver", ".\\resources\\IEDriverServer.exe");
+			driver = new InternetExplorerDriver();
+		} else if (browserName.equalsIgnoreCase("chromeheadless")) {
+			System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("headless");
+			options.addArguments("window-size=1366x768");
+			driver = new ChromeDriver(options);
+		}
+		System.out.println("Run on browser = " + browserName);
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		driver.get("http://demo.guru99.com/v4/");
 		email = "selenium09" + randomNumber() + "@gmail.com";
 		loginPage = PageFactoryManager.getLoginPage(driver);
 	}
@@ -64,13 +89,20 @@ public class Account_Level_06_MultipleBrowser_ParallelTesting extends AbstractTe
 		Assert.assertTrue(homePage.isWelcomeMessageDisplayed());
 		Assert.assertTrue(homePage.isUserIDDisplayed(userIdInfor));
 
-		loginPage = homePage.clickToLogoutLink();
-		Assert.assertTrue(loginPage.isLoginFormDisplayed());
 	}
-	
+
 	@Test
-	public void TC_03_OpenMultiplePage() {
+	public void TC_03_OpenMultiPage() {
+		// Home page qua New Account page
+		newAccountPage = homePage.openNewAccountPage(driver);
+		// New Account page qua Deposit
+		depositPage = newAccountPage.openDepositPage(driver);
 		
+		// Deposit qua Fund Transfer
+		fundTransferPage = depositPage.openFundTransferPage(driver);
+	
+		// Fund Transfer quay lai Home page
+		homePage = fundTransferPage.openHomePage(driver);
 	}
 
 	@AfterClass

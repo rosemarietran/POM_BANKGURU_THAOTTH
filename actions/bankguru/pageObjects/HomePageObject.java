@@ -32,4 +32,6 @@ public class HomePageObject extends AbstractPage{
 		acceptAlert(driver);
 		return PageFactoryManager.getLoginPage(driver);
 	}
+
+
 }
