@@ -11,7 +11,7 @@
 	<test name="Run on Chrome">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.bankguru.account.Account_Level_07_WebDriverLifeCycle_ActionChain" />
+			<class name="com.bankguru.account.Account_Level_08_DynamicLocator_RestParameter" />
 		</classes>
 	</test>
 

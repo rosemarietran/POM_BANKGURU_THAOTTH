@@ -27,8 +27,6 @@ public class AbstractPage {
 	List<WebElement> elements;
 	Actions action;
 	By byLocator;
-	long shortTimeout = 5;
-	long longTimeout = 30;
 
 	public void openAnyUrl(WebDriver driver, String url) {
 		driver.get(url);
@@ -80,13 +78,34 @@ public class AbstractPage {
 		element.click();
 	}
 
+	public void clickToElement(WebDriver driver, String locator, String... dynamicValues) {
+		locator = String.format(locator, (Object[]) dynamicValues);
+		highlightElement(driver, locator);
+		element = driver.findElement(By.xpath(locator));
+		element.click();
+	}
+
 	public void sendKeyToElement(WebDriver driver, String locator, String value) {
 		highlightElement(driver, locator);
 		element = driver.findElement(By.xpath(locator));
 		element.sendKeys(value);
 	}
 
+	public void sendKeyToElement(WebDriver driver, String locator, String valueToSendKey, String... dynamicValues) {
+		locator = String.format(locator, (Object[]) dynamicValues);
+		highlightElement(driver, locator);
+		element = driver.findElement(By.xpath(locator));
+		element.sendKeys(valueToSendKey);
+	}
+
 	public String getTextElement(WebDriver driver, String locator) {
+		highlightElement(driver, locator);
+		element = driver.findElement(By.xpath(locator));
+		return element.getText();
+	}
+
+	public String getTextElement(WebDriver driver, String locator, String... dynamicValues) {
+		locator = String.format(locator, (Object[]) dynamicValues);
 		highlightElement(driver, locator);
 		element = driver.findElement(By.xpath(locator));
 		return element.getText();
@@ -107,7 +126,7 @@ public class AbstractPage {
 	public void selectItemCustomDropdown(WebDriver driver, String parentXpath, String allItemsXpath,
 			String expectedItemValue) throws Exception {
 		WebElement parentDropdown = driver.findElement(By.xpath(parentXpath));
-		waitExplicit = new WebDriverWait(driver, longTimeout);
+		waitExplicit = new WebDriverWait(driver, Constants.LONG_TIMEOUT);
 		javascriptExecutor.executeScript("arguments[0].click()", parentDropdown);
 
 		waitExplicit.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(allItemsXpath)));
@@ -156,6 +175,13 @@ public class AbstractPage {
 	}
 
 	public boolean isControlDisplayed(WebDriver driver, String locator) {
+		highlightElement(driver, locator);
+		element = driver.findElement(By.xpath(locator));
+		return element.isDisplayed();
+	}
+
+	public boolean isControlDisplayed(WebDriver driver, String locator, String... dynamicValues) {
+		locator = String.format(locator, (Object[]) dynamicValues);
 		highlightElement(driver, locator);
 		element = driver.findElement(By.xpath(locator));
 		return element.isDisplayed();
@@ -254,14 +280,14 @@ public class AbstractPage {
 		element = driver.findElement(By.xpath(locator));
 		String originalStyle = element.getAttribute("style");
 		System.out.println("Original style of element = " + originalStyle);
-		javascriptExecutor.executeScript("arguments[0].setAttribute(arguments[1],arguments[2])",element,"style",
+		javascriptExecutor.executeScript("arguments[0].setAttribute(arguments[1],arguments[2])", element, "style",
 				"border: 3px solid red; border-style: dashed;");
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		javascriptExecutor.executeScript("arguments[0].setAttribute(arguments[1],arguments[2])",element,"style",
+		javascriptExecutor.executeScript("arguments[0].setAttribute(arguments[1],arguments[2])", element, "style",
 				originalStyle);
 	}
 
@@ -301,31 +327,38 @@ public class AbstractPage {
 	}
 
 	public void waitForElementPresence(WebDriver driver, String locator) {
-		waitExplicit = new WebDriverWait(driver, longTimeout);
+		waitExplicit = new WebDriverWait(driver, Constants.LONG_TIMEOUT);
 		By byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.presenceOfElementLocated(byLocator));
 	}
 
 	public void waitForElementVisible(WebDriver driver, String locator) {
-		waitExplicit = new WebDriverWait(driver, longTimeout);
+		waitExplicit = new WebDriverWait(driver, Constants.LONG_TIMEOUT);
+		By byLocator = By.xpath(locator);
+		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
+	}
+
+	public void waitForElementVisible(WebDriver driver, String locator, String... dynamicValues) {
+		locator = String.format(locator, (Object[]) dynamicValues);
+		waitExplicit = new WebDriverWait(driver, Constants.LONG_TIMEOUT);
 		By byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
 	}
 
 	public void waitForElementClickable(WebDriver driver, String locator) {
-		waitExplicit = new WebDriverWait(driver, longTimeout);
+		waitExplicit = new WebDriverWait(driver, Constants.LONG_TIMEOUT);
 		By byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.elementToBeClickable(byLocator));
 	}
 
 	public void waitForElementInvisible(WebDriver driver, String locator) {
-		waitExplicit = new WebDriverWait(driver, longTimeout);
+		waitExplicit = new WebDriverWait(driver, Constants.LONG_TIMEOUT);
 		By byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.invisibilityOfElementLocated(byLocator));
 	}
 
 	public void waitForAlertPresence(WebDriver driver) {
-		waitExplicit = new WebDriverWait(driver, longTimeout);
+		waitExplicit = new WebDriverWait(driver, Constants.LONG_TIMEOUT);
 		waitExplicit.until(ExpectedConditions.alertIsPresent());
 	}
 
@@ -351,5 +384,21 @@ public class AbstractPage {
 		waitForElementVisible(driver, AbstractPageUI.FUND_TRANSFER_LINK);
 		clickToElement(driver, AbstractPageUI.FUND_TRANSFER_LINK);
 		return PageFactoryManager.getFundTransferPage(driver);
+	}
+
+	public AbstractPage openMultiplePages(WebDriver driver, String pageName) {
+		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_LINK, pageName);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_LINK, pageName);
+
+		switch (pageName) {
+		case "New Account":
+			return PageFactoryManager.getNewAccountPage(driver);
+		case "Deposit":
+			return PageFactoryManager.getDepositPage(driver);
+		case "Fund Transfer":
+			return PageFactoryManager.getFundTransferPage(driver);
+		default:
+			return PageFactoryManager.getHomePage(driver);
+		}
 	}
 }
