@@ -1,5 +1,6 @@
 package commons;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -191,51 +192,51 @@ public class AbstractPage {
 	public boolean isControlUndisplayed(WebDriver driver, String locator) {
 		overideGlobalTimeout(driver, Constants.SHORT_TIMEOUT);
 		List<WebElement> elements = driver.findElements(By.xpath(locator));
-		
+
 		if (elements.size() == 0) {
 			System.out.println("Element is not in DOM");
 			overideGlobalTimeout(driver, Constants.LONG_TIMEOUT);
 			return true;
-			
+
 		} else if (elements.size() > 0 && !elements.get(0).isDisplayed()) {
 			System.out.println("Element is in DOM but is not visible/ displayed");
 			overideGlobalTimeout(driver, Constants.LONG_TIMEOUT);
 			return true;
-			
+
 		} else {
 			System.out.println("Element is in DOM and visible/ displayed");
 			overideGlobalTimeout(driver, Constants.LONG_TIMEOUT);
 			return false;
-			
+
 		}
 	}
-	
-	public boolean isControlUndisplayed(WebDriver driver, String locator, String...values) {
+
+	public boolean isControlUndisplayed(WebDriver driver, String locator, String... values) {
 		overideGlobalTimeout(driver, Constants.SHORT_TIMEOUT);
 		locator = String.format(locator, (Object[]) values);
 		List<WebElement> elements = driver.findElements(By.xpath(locator));
-		
+
 		if (elements.size() == 0) {
 			System.out.println("Element is not in DOM");
 			overideGlobalTimeout(driver, Constants.LONG_TIMEOUT);
 			return true;
-			
+
 		} else if (elements.size() > 0 && !elements.get(0).isDisplayed()) {
 			System.out.println("Element is in DOM but is not visible/ displayed");
 			overideGlobalTimeout(driver, Constants.LONG_TIMEOUT);
 			return true;
-			
+
 		} else {
 			System.out.println("Element is in DOM and visible/ displayed");
 			overideGlobalTimeout(driver, Constants.LONG_TIMEOUT);
 			return false;
-			
+
 		}
 	}
 
 	public void overideGlobalTimeout(WebDriver driver, long timeOut) {
 		driver.manage().timeouts().implicitlyWait(timeOut, TimeUnit.SECONDS);
-	}
+	} 	
 
 	public boolean isControlIsSelected(WebDriver driver, String locator) {
 		element = driver.findElement(By.xpath(locator));
@@ -453,4 +454,5 @@ public class AbstractPage {
 			return PageFactoryManager.getHomePage(driver);
 		}
 	}
+
 }

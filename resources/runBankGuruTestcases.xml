@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="BANK GURU" parallel="false">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
+		<listener class-name="commons.ExtentReportListener"/>
+	</listeners>
 
-	<!-- <test name="Run on Firefox">
+	<test name="Run on Firefox">
 		<parameter name="browser" value="firefox" />
 		<classes>
-			<class name="com.bankguru.account.Account_Level_06_MultipleBrowser_ParallelTesting" />
-		</classes>
-	</test> -->
-
-	<test name="Run on Chrome">
-		<parameter name="browser" value="chrome" />
-		<classes>
-			<class name="com.bankguru.account.Account_Level_08_DynamicLocator_RestParameter" />
+			<class name="com.bankguru.account.Account_Level_10_Assert_Verify_Log_ReportHTML" />
 		</classes>
 	</test>
 
-	<!-- <test name="Run on Chrome Headless">
-		<parameter name="browser" value="chromeheadless" />
-		<classes>
-			<class name="com.bankguru.account.Account_Level_06_MultipleBrowser_ParallelTesting" />
-		</classes>
-	</test> -->
+	<!-- <test name="Run on Chrome"> <parameter name="browser" value="chrome" /> <classes> <class name="com.bankguru.account.Account_Level_08_DynamicLocator_RestParameter" /> </classes> </test> -->
+
+	<!-- <test name="Run on Chrome Headless"> <parameter name="browser" value="chromeheadless" /> <classes> <class name="com.bankguru.account.Account_Level_06_MultipleBrowser_ParallelTesting" /> </classes> </test> -->
 
 </suite> <!-- Suite -->
