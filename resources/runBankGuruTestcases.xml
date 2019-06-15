@@ -9,7 +9,8 @@
 	<test name="Run on Firefox">
 		<parameter name="browser" value="firefox" />
 		<classes>
-			<class name="com.bankguru.account.Account_Level_10_Assert_Verify_Log_ReportHTML" />
+			<class name="com.bankguru.account.Account_Common_01_RegisterToSystem" />
+			<class name="com.bankguru.account.Account_Level_11_ShareClassState_CloseBrowser_WebDriverManagerLib" />
 		</classes>
 	</test>
 

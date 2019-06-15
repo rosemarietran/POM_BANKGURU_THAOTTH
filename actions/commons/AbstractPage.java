@@ -14,6 +14,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
 
 import bankguru.FundTransferPageUI;
 import bankguru.pageObjects.DepositPageObject;
@@ -177,9 +178,22 @@ public class AbstractPage {
 	}
 
 	public boolean isControlDisplayed(WebDriver driver, String locator) {
-		highlightElement(driver, locator);
-		element = driver.findElement(By.xpath(locator));
-		return element.isDisplayed();
+		boolean status = true;
+		try {
+			highlightElement(driver, locator);
+			element = driver.findElement(By.xpath(locator));
+			if (element.isDisplayed()) {
+				return status;
+			}
+		} catch (Exception e) {
+			Reporter.log("--------------------------Element not displayed--------------------------");
+			Reporter.log(e.getMessage());
+			System.err.println("--------------------------Element not displayed--------------------------");
+			System.err.println(e.getMessage());
+			status = false;
+		}
+
+		return status;
 	}
 
 	public boolean isControlDisplayed(WebDriver driver, String locator, String... dynamicValues) {
@@ -236,7 +250,7 @@ public class AbstractPage {
 
 	public void overideGlobalTimeout(WebDriver driver, long timeOut) {
 		driver.manage().timeouts().implicitlyWait(timeOut, TimeUnit.SECONDS);
-	} 	
+	}
 
 	public boolean isControlIsSelected(WebDriver driver, String locator) {
 		element = driver.findElement(By.xpath(locator));
@@ -386,7 +400,15 @@ public class AbstractPage {
 	public void waitForElementVisible(WebDriver driver, String locator) {
 		waitExplicit = new WebDriverWait(driver, Constants.LONG_TIMEOUT);
 		By byLocator = By.xpath(locator);
-		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
+		try {
+			waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
+		} catch (Exception e) {
+			Reporter.log("--------------------Wait for element not visible-------------------");
+			Reporter.log(e.getMessage());
+			System.err.println("--------------------Wait for element not visible-------------------");
+			System.err.println(e.getMessage() + "\n");
+		}
+
 	}
 
 	public void waitForElementVisible(WebDriver driver, String locator, String... dynamicValues) {

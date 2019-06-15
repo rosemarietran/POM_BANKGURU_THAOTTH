@@ -12,6 +12,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.Assert;
 import org.testng.Reporter;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 public class AbstractTest {
 	private WebDriver driver;
 	protected final Log log;
@@ -22,16 +24,20 @@ public class AbstractTest {
 
 	protected WebDriver openMultiBrowser(String browserName) {
 		if (browserName.equalsIgnoreCase("firefox")) {
-			System.setProperty("webdriver.gecko.driver", ".\\resources\\geckodriver.exe");
+			WebDriverManager.firefoxdriver().setup();
+			//System.setProperty("webdriver.gecko.driver", ".\\resources\\geckodriver.exe");
 			driver = new FirefoxDriver();
 		} else if (browserName.equalsIgnoreCase("chrome")) {
-			System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
+			WebDriverManager.chromedriver().setup();
+			//System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
 			driver = new ChromeDriver();
 		} else if (browserName.equalsIgnoreCase("ie")) {
-			System.setProperty("webdriver.ie.driver", ".\\resources\\IEDriverServer.exe");
+			WebDriverManager.iedriver().setup();
+			//System.setProperty("webdriver.ie.driver", ".\\resources\\IEDriverServer.exe");
 			driver = new InternetExplorerDriver();
 		} else if (browserName.equalsIgnoreCase("chromeheadless")) {
-			System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
+			WebDriverManager.chromedriver().version("2.46").setup();
+			//System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("headless");
 			options.addArguments("window-size=1366x768");
@@ -42,6 +48,41 @@ public class AbstractTest {
 		driver.manage().window().maximize();
 		driver.get(Constants.DEV_APP_URL);
 		return driver;
+	}
+
+	protected void closeBrowserAndDriver(WebDriver driver) {
+		try {
+			// get ra tên của OS và convert qua chữ thường
+			String osName = System.getProperty("os.name").toLowerCase();
+			log.info("OS name = " + osName);
+
+			// Khai báo 1 biến command line để thực thi
+			String cmd = "";
+			if (driver != null) {
+				driver.quit();
+			}
+
+			if (driver.toString().toLowerCase().contains("chrome")) {
+				if (osName.toLowerCase().contains("mac")) {
+					cmd = "pkill chromedriver";
+				} else if (osName.toLowerCase().contains("windows")) {
+					cmd = "taskkill /F /FI \"IMAGENAME eq chromedriver*\"";
+				}
+				Process process = Runtime.getRuntime().exec(cmd);
+				process.waitFor();
+			}
+
+			if (driver.toString().toLowerCase().contains("internetexplorer")) {
+				if (osName.toLowerCase().contains("window")) {
+					cmd = "taskkill /F /FI \"IMAGENAME eq IEDriverServer*\"";
+					Process process = Runtime.getRuntime().exec(cmd);
+					process.waitFor();
+				}
+			}
+			log.info("---------- QUIT BROWSER SUCCESS ----------");
+		} catch (Exception e) {
+			log.info(e.getMessage());
+		}
 	}
 
 	private boolean checkPassed(boolean condition) {
