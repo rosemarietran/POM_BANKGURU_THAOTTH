@@ -24,8 +24,8 @@ public class AbstractTest {
 
 	protected WebDriver openMultiBrowser(String browserName) {
 		if (browserName.equalsIgnoreCase("firefox")) {
-			WebDriverManager.firefoxdriver().setup();
-			//System.setProperty("webdriver.gecko.driver", ".\\resources\\geckodriver.exe");
+			//WebDriverManager.firefoxdriver().setup();
+			System.setProperty("webdriver.gecko.driver", ".\\resources\\geckodriver.exe");
 			driver = new FirefoxDriver();
 		} else if (browserName.equalsIgnoreCase("chrome")) {
 			WebDriverManager.chromedriver().setup();

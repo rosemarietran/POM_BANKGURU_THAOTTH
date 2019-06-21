@@ -344,7 +344,6 @@ public class AbstractPage {
 		javascriptExecutor = (JavascriptExecutor) driver;
 		element = driver.findElement(By.xpath(locator));
 		String originalStyle = element.getAttribute("style");
-		System.out.println("Original style of element = " + originalStyle);
 		javascriptExecutor.executeScript("arguments[0].setAttribute(arguments[1],arguments[2])", element, "style",
 				"border: 3px solid red; border-style: dashed;");
 		try {
@@ -408,11 +407,11 @@ public class AbstractPage {
 			System.err.println("--------------------Wait for element not visible-------------------");
 			System.err.println(e.getMessage() + "\n");
 		}
-
 	}
 
 	public void waitForElementVisible(WebDriver driver, String locator, String... dynamicValues) {
 		locator = String.format(locator, (Object[]) dynamicValues);
+		System.out.println(locator);
 		waitExplicit = new WebDriverWait(driver, Constants.LONG_TIMEOUT);
 		By byLocator = By.xpath(locator);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
@@ -468,6 +467,8 @@ public class AbstractPage {
 		switch (pageName) {
 		case "New Account":
 			return PageFactoryManager.getNewAccountPage(driver);
+		case "New Customer":
+			return PageFactoryManager.getNewCustomerPage(driver);
 		case "Deposit":
 			return PageFactoryManager.getDepositPage(driver);
 		case "Fund Transfer":
@@ -475,6 +476,26 @@ public class AbstractPage {
 		default:
 			return PageFactoryManager.getHomePage(driver);
 		}
+	}
+
+	public void inputToDynamicButtonOrTextboxTextArea(WebDriver driver, String fieldName, String value) {
+		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX_TEXTAREA_BUTTON_CHECKBOX, fieldName);
+		sendKeyToElement(driver, AbstractPageUI.DYNAMIC_TEXTBOX_TEXTAREA_BUTTON_CHECKBOX, value, fieldName);
+	}
+
+	public void clickToDynamicButtonOrTextboxTextArea(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX_TEXTAREA_BUTTON_CHECKBOX, fieldName);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_TEXTBOX_TEXTAREA_BUTTON_CHECKBOX, fieldName);
+	}
+
+	public String getDynamicErrorMessage(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE, fieldName);
+		return getTextElement(driver, AbstractPageUI.DYNAMIC_ERROR_MESSAGE, fieldName);
+	}
+
+	public boolean isDynamicPageTitleDisplayed(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_PAGE_TITLE, fieldName);
+		return isControlDisplayed(driver, AbstractPageUI.DYNAMIC_PAGE_TITLE, fieldName);
 	}
 
 }
