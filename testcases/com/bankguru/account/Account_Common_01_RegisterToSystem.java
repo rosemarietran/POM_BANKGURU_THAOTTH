@@ -1,7 +1,6 @@
 package com.bankguru.account;
 
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -56,20 +55,17 @@ public class Account_Common_01_RegisterToSystem extends AbstractTest {
 
 		log.info("Register - Step 04: Verify Register page displayed");
 		Assert.assertTrue(registerPage.isRegisterPageDisplayed());
-
+				
 		log.info("Register - Step 05: Input to 'Email' textbox and click to 'Login' button");
 		registerPage.inputToEmailIDTextbox(email);
+		
 		registerPage.clickToSubmitButton();
-
+		
 		log.info("Get User Id and Password infor");
 		USER_ID_INFO = registerPage.getUserIdInfor();
 		PASSWORD_INFO = registerPage.getPasswordInfor();
-
-	}
-
-	@AfterTest(alwaysRun = true)
-	public void afterTest() {
 		closeBrowserAndDriver(driver);
+
 	}
 
 	public int randomNumber() {

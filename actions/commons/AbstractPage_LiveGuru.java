@@ -1,9 +1,11 @@
 package commons;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -15,12 +17,11 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Reporter;
 
-import bankguru.pageObjects.DepositPageObject;
-import bankguru.pageObjects.FundTransferPageObject;
-import bankguru.pageObjects.HomePageObject;
-import bankguru.pageObjects.NewAccountPageObject;
+import liveguru.pageObjects.HomePageObject;
 
-public class AbstractPage {
+
+
+public class AbstractPage_LiveGuru {
 	WebElement element;
 	JavascriptExecutor javascriptExecutor;
 	WebDriverWait waitExplicit;
@@ -465,54 +466,19 @@ public class AbstractPage {
 	public HomePageObject openHomePage(WebDriver driver) {
 		waitForElementVisible(driver, AbstractPageUI.HOME_PAGE_LINK);
 		clickToElement(driver, AbstractPageUI.HOME_PAGE_LINK);
-		return PageFactoryManager.getHomePage(driver);
+		return PageFactoryManager_LiveGuru.getHomePage(driver);
 	}
 
-	public NewAccountPageObject openNewAccountPage(WebDriver driver) {
-		waitForElementVisible(driver, AbstractPageUI.NEW_ACCOUNT_LINK);
-		clickToElement(driver, AbstractPageUI.NEW_ACCOUNT_LINK);
-		return PageFactoryManager.getNewAccountPage(driver);
-	}
 
-	public DepositPageObject openDepositPage(WebDriver driver) {
-		waitForElementVisible(driver, AbstractPageUI.DEPOSIT_LINK);
-		clickToElement(driver, AbstractPageUI.DEPOSIT_LINK);
-		return PageFactoryManager.getDepositPage(driver);
-	}
-
-	public FundTransferPageObject openFundTransferPage(WebDriver driver) {
-		waitForElementVisible(driver, AbstractPageUI.FUND_TRANSFER_LINK);
-		clickToElement(driver, AbstractPageUI.FUND_TRANSFER_LINK);
-		return PageFactoryManager.getFundTransferPage(driver);
-	}
-
-	public AbstractPage openMultiplePages(WebDriver driver, String pageName) {
-		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_LINK, pageName);
-		clickToElement(driver, AbstractPageUI.DYNAMIC_LINK, pageName);
+	public AbstractPage_LiveGuru openMultiplePages(WebDriver driver, String pageName) {
+		waitForElementVisible(driver, AbstractPageUI_LiveGuru.DYNAMIC_LEFT_SIDE_MENU_LINK, pageName);
+		clickToElement(driver, AbstractPageUI_LiveGuru.DYNAMIC_LEFT_SIDE_MENU_LINK, pageName);
 
 		switch (pageName) {
-		case "New Account":
-			return PageFactoryManager.getNewAccountPage(driver);
-		case "Edit Account":
-			return PageFactoryManager.getEditAccountPage(driver);
-		case "Delete Account":
-			return PageFactoryManager.getDeleteAccountPage(driver);
-		case "New Customer":
-			return PageFactoryManager.getNewCustomerPage(driver);
-		case "Edit Customer":
-			return PageFactoryManager.getEditCustomerPage(driver);
-		case "Delete Customer":
-			return PageFactoryManager.getDeleteCustomerPage(driver);
-		case "Deposit":
-			return PageFactoryManager.getDepositPage(driver);
-		case "Fund Transfer":
-			return PageFactoryManager.getFundTransferPage(driver);
-		case "Withdrawal":
-			return PageFactoryManager.getWithdrawalPage(driver);
-		case "Balance Enquiry":
-			return PageFactoryManager.getBalanceEnquiryPage(driver);
+		case "Account Information":
+			return PageFactoryManager_LiveGuru.getAccountInformationPage(driver);
 		default:
-			return PageFactoryManager.getHomePage(driver);
+			return PageFactoryManager_LiveGuru.getHomePage(driver);
 		}
 	}
 
@@ -527,6 +493,11 @@ public class AbstractPage {
 	public void clickToDynamicButtonOrTextboxTextArea(WebDriver driver, String fieldName) {
 		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX_TEXTAREA_BUTTON_CHECKBOX, fieldName);
 		clickToElement(driver, AbstractPageUI.DYNAMIC_TEXTBOX_TEXTAREA_BUTTON_CHECKBOX, fieldName);
+	}
+	
+	public void clickToDynamicButton(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_BUTTON, fieldName);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_BUTTON, fieldName);
 	}
 
 	public String getDynamicErrorMessage(WebDriver driver, String fieldName) {
@@ -577,5 +548,46 @@ public class AbstractPage {
 			return true;
 		}
 		return false;
+	}
+	
+	//LIVE GURU
+	public void clickToDynamicCartWrapperMenu(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI_LiveGuru.DYNAMIC_CART_WRAPPER_MENU, fieldName);
+		clickToElement(driver, AbstractPageUI_LiveGuru.DYNAMIC_CART_WRAPPER_MENU, fieldName);		
+	}
+	
+	public boolean isDynamicPageTitleDisplayed(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI_LiveGuru.DYNAMIC_PAGE_TITLE, fieldName);
+		return isControlDisplayed(driver, AbstractPageUI_LiveGuru.DYNAMIC_PAGE_TITLE, fieldName);
+	}
+	
+	public String getDynamicMessage(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI_LiveGuru.DYNAMIC_MESSAGE, fieldName);
+		return getTextElement(driver, AbstractPageUI_LiveGuru.DYNAMIC_MESSAGE, fieldName);
+	}
+	
+	public boolean isDynamicPageDetailTitleDisplayed(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI_LiveGuru.DYNAMIC_PAGE_DETAIL_TITLE, fieldName);
+		return isControlDisplayed(driver, AbstractPageUI_LiveGuru.DYNAMIC_PAGE_DETAIL_TITLE, fieldName);
+	}
+	
+	public boolean isDynamicDisplayed(WebDriver driver, String locator, String fieldName) {
+		waitForElementVisible(driver, locator, fieldName);
+		return isControlDisplayed(driver, locator, fieldName);
+	}
+	
+	public void clickToDynamicElement(WebDriver driver, String locator, String fieldName) {
+		waitForElementVisible(driver, locator, fieldName);
+		clickToElement(driver, locator, fieldName);		
+	}
+	
+	public String getDynamicText(WebDriver driver, String locator, String fieldName) {
+		waitForElementVisible(driver, locator, fieldName);
+		return getTextElement(driver, locator, fieldName);
+	}
+	
+	public String getTextInElement(WebDriver driver, String locator) {
+		waitForElementVisible(driver, locator);
+		return getTextElement(driver, locator);
 	}
 }

@@ -50,7 +50,7 @@ public class Account_Level_12_DynamicPageElement extends AbstractTest {
 	public void TC_01_ValidateErrorMessageAtNewCustomerForm() {
 		log.info("ValidateNewCustomer - Step 01: Open new customer page");
 		newCustomerPage = (NewCustomerPageObject) homePage.openMultiplePages(driver, "New Customer");
-		verifyTrue(newCustomerPage.isDynamicPageTitleDisplayed(driver, "Add New Customer"));
+		verifyTrue(newCustomerPage.isDynamicPageTitleOrPageMessageDisplayed(driver, "Add New Customer"));
 		
 		log.info("ValidateNewCustomer - Step 02: Click to all fields (empty data) at New Customer Form");
 		newCustomerPage.clickToDynamicButtonOrTextboxTextArea(driver, "name");
@@ -80,7 +80,7 @@ public class Account_Level_12_DynamicPageElement extends AbstractTest {
 	public void TC_02_ValidateErrorMessageAtNewAccountForm() {
 		log.info("ValidateNewAccount - Step 01: Open new account page");
 		newAccountPage = (NewAccountPageObject) homePage.openMultiplePages(driver, "New Account");
-		verifyTrue(newAccountPage.isDynamicPageTitleDisplayed(	driver, "Add new account form"));
+		verifyTrue(newAccountPage.isDynamicPageTitleOrPageMessageDisplayed(	driver, "Add new account form"));
 		
 		log.info("ValidateNewAccount - Step 02: Click to all fields (empty data) at New Account form");
 		newAccountPage.clickToDynamicButtonOrTextboxTextArea(driver, "cusid");
@@ -96,7 +96,7 @@ public class Account_Level_12_DynamicPageElement extends AbstractTest {
 	public void TC_03_ValidateErrorMessageAtDepositForm() {
 		log.info("ValidateDeposit - Step 01: Open deposit page");
 		depositPage = (DepositPageObject) homePage.openMultiplePages(driver, "Deposit");
-		verifyTrue(depositPage.isDynamicPageTitleDisplayed(	driver, "Amount Deposit Form"));
+		verifyTrue(depositPage.isDynamicPageTitleOrPageMessageDisplayed(	driver, "Amount Deposit Form"));
 		
 		log.info("ValidateNewAccount - Step 02: Click to all fields (empty data) at New Account form");
 		depositPage.clickToDynamicButtonOrTextboxTextArea(driver, "accountno");

@@ -3,7 +3,13 @@ package commons;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import javax.print.attribute.standard.DateTimeAtCompleted;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -24,29 +30,61 @@ public class AbstractTest {
 
 	protected WebDriver openMultiBrowser(String browserName) {
 		if (browserName.equalsIgnoreCase("firefox")) {
-			//WebDriverManager.firefoxdriver().setup();
+			// WebDriverManager.firefoxdriver().setup();
 			System.setProperty("webdriver.gecko.driver", ".\\resources\\geckodriver.exe");
 			driver = new FirefoxDriver();
 		} else if (browserName.equalsIgnoreCase("chrome")) {
 			WebDriverManager.chromedriver().setup();
-			//System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
+			// System.setProperty("webdriver.chrome.driver",
+			// ".\\resources\\chromedriver.exe");
 			driver = new ChromeDriver();
 		} else if (browserName.equalsIgnoreCase("ie")) {
 			WebDriverManager.iedriver().setup();
-			//System.setProperty("webdriver.ie.driver", ".\\resources\\IEDriverServer.exe");
+			// System.setProperty("webdriver.ie.driver",
+			// ".\\resources\\IEDriverServer.exe");
 			driver = new InternetExplorerDriver();
 		} else if (browserName.equalsIgnoreCase("chromeheadless")) {
 			WebDriverManager.chromedriver().version("2.46").setup();
-			//System.setProperty("webdriver.chrome.driver", ".\\resources\\chromedriver.exe");
+			// System.setProperty("webdriver.chrome.driver",
+			// ".\\resources\\chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("headless");
 			options.addArguments("window-size=1366x768");
 			driver = new ChromeDriver(options);
 		}
-		System.out.println("Run on browser = " + browserName);
 		driver.manage().timeouts().implicitlyWait(Constants.LONG_TIMEOUT, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		driver.get(Constants.DEV_APP_URL);
+		return driver;
+	}
+	
+	protected WebDriver openMultiBrowser_LiveGuru(String browserName) {
+		if (browserName.equalsIgnoreCase("firefox")) {
+			// WebDriverManager.firefoxdriver().setup();
+			System.setProperty("webdriver.gecko.driver", ".\\resources\\geckodriver.exe");
+			driver = new FirefoxDriver();
+		} else if (browserName.equalsIgnoreCase("chrome")) {
+			WebDriverManager.chromedriver().setup();
+			// System.setProperty("webdriver.chrome.driver",
+			// ".\\resources\\chromedriver.exe");
+			driver = new ChromeDriver();
+		} else if (browserName.equalsIgnoreCase("ie")) {
+			WebDriverManager.iedriver().setup();
+			// System.setProperty("webdriver.ie.driver",
+			// ".\\resources\\IEDriverServer.exe");
+			driver = new InternetExplorerDriver();
+		} else if (browserName.equalsIgnoreCase("chromeheadless")) {
+			WebDriverManager.chromedriver().version("2.46").setup();
+			// System.setProperty("webdriver.chrome.driver",
+			// ".\\resources\\chromedriver.exe");
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("headless");
+			options.addArguments("window-size=1366x768");
+			driver = new ChromeDriver(options);
+		}
+		driver.manage().timeouts().implicitlyWait(Constants.LONG_TIMEOUT, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		driver.get(Constants.TEST_APP_URL);
 		return driver;
 	}
 
@@ -158,5 +196,13 @@ public class AbstractTest {
 
 	protected boolean verifyEquals(Object actual, Object expected) {
 		return checkEquals(actual, expected);
+	}
+
+	public String getCurrentDay() {
+		Date date = new Date();
+		// date.setDate(date.getDate() - 1);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String formattedDate = dateFormat.format(date);
+		return formattedDate;
 	}
 }
