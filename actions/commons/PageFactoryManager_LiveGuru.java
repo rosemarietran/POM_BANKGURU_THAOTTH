@@ -7,6 +7,7 @@ import liveguru.pageObjects.HomePageObject;
 import liveguru.pageObjects.LoginPageObject;
 import liveguru.pageObjects.MobilePageObject;
 import liveguru.pageObjects.RegisterPageObject;
+import liveguru.pageObjects.TVPageObject;
 
 public class PageFactoryManager_LiveGuru {
 	public static LoginPageObject getLoginPage(WebDriver driver) {
@@ -27,6 +28,10 @@ public class PageFactoryManager_LiveGuru {
 	
 	public static MobilePageObject getMobilePage(WebDriver driver) {
 		return new MobilePageObject(driver);
+	}
+	
+	public static TVPageObject getTVPage(WebDriver driver) {
+		return new TVPageObject(driver);
 	}
 
 }

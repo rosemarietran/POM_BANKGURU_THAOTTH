@@ -14,4 +14,10 @@ public class AbstractPageUI_LiveGuru {
 	public static final String DYNAMIC_MESSAGE = "//li[@class='success-msg']//span[contains(text(),'%s')]";
 	public static final String DYNAMIC_LEFT_SIDE_MENU_LINK = "//div[@class='block-content']//a[text()='%s']";
 	public static final String DYNAMIC_PAGE_DETAIL_TITLE = "//div[@class='fieldset']/h2[contains(text(),'%s')]";
+	public static final String DYNAMIC_ADD_TO_CART_BUTTON = "//a[text()='%s']//parent::h2//following-sibling::div[@class='actions']/button";
+	public static final String DYNAMIC_ADD_TO_COMPARE_LINK = "//a[text()='%s']//parent::h2//following-sibling::div[@class='actions']//a[contains(text(),'Add to Compare')]";
+	public static final String DYNAMIC_ADD_TO_WISHLIST_LINK = "//a[text()='%s']//parent::h2//following-sibling::div[@class='actions']//a[contains(text(),'Add to Wishlist')]";
+	public static final String DYNAMIC_TEXTBOX_TEXTAREA = "//input[@title='%s']";
+	public static final String PRODUCT_VIEW_DETAIL_LINK = "//a[contains(text(),'%s')]";
+	public static final String DYNAMIC_TEXT_LINK = "//a[contains(text(),'%s')]";
 }

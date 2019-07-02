@@ -103,7 +103,7 @@ public class AbstractPage_LiveGuru {
 	public String getTextElement(WebDriver driver, String locator) {
 		highlightElement(driver, locator);
 		element = driver.findElement(By.xpath(locator));
-		return element.getText();
+		return element.getText().trim();
 	}
 
 	public String getTextElement(WebDriver driver, String locator, String... dynamicValues) {
@@ -489,7 +489,7 @@ public class AbstractPage_LiveGuru {
 		}
 		sendKeyToElement(driver, AbstractPageUI.DYNAMIC_TEXTBOX_TEXTAREA_BUTTON_CHECKBOX, value, fieldName);
 	}
-
+	
 	public void clickToDynamicButtonOrTextboxTextArea(WebDriver driver, String fieldName) {
 		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX_TEXTAREA_BUTTON_CHECKBOX, fieldName);
 		clickToElement(driver, AbstractPageUI.DYNAMIC_TEXTBOX_TEXTAREA_BUTTON_CHECKBOX, fieldName);
@@ -589,5 +589,33 @@ public class AbstractPage_LiveGuru {
 	public String getTextInElement(WebDriver driver, String locator) {
 		waitForElementVisible(driver, locator);
 		return getTextElement(driver, locator);
+	}
+	
+	public void clickToDynamicAddToCartButton(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI_LiveGuru.DYNAMIC_ADD_TO_CART_BUTTON, fieldName);
+		clickToElement(driver, AbstractPageUI_LiveGuru.DYNAMIC_ADD_TO_CART_BUTTON, fieldName);
+	}
+	
+	public void clickToDynamicAddToCompareButton(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI_LiveGuru.DYNAMIC_ADD_TO_COMPARE_LINK, fieldName);
+		clickToElement(driver, AbstractPageUI_LiveGuru.DYNAMIC_ADD_TO_COMPARE_LINK, fieldName);
+	}
+	
+	public void clickToDynamicAddToWishlistButton(WebDriver driver, String fieldName) {
+		waitForElementVisible(driver, AbstractPageUI_LiveGuru.DYNAMIC_ADD_TO_WISHLIST_LINK, fieldName);
+		clickToElement(driver, AbstractPageUI_LiveGuru.DYNAMIC_ADD_TO_WISHLIST_LINK, fieldName);
+	}
+	
+	public void clickAnElement(WebDriver driver, String locator) {
+		waitForElementVisible(driver, locator);
+		clickToElement(driver, locator);		
+	}
+	
+	public void inputToDynamicTextboxOrTextArea(WebDriver driver, String locator, String fieldName, String value) {
+		waitForElementVisible(driver, locator, fieldName);
+		if (driver.toString().contains("chrome")) {
+			removeAttributeInDOM(driver, locator , "type", fieldName);
+		}
+		sendKeyToElement(driver, locator, value, fieldName);
 	}
 }

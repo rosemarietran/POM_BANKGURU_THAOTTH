@@ -17,8 +17,8 @@
 	<test name="Run on Chrome">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<!-- <class name="com.liveguru.frontend.FrontEnd_Common_01_RegisterToSystem" /> -->
-			<class name="com.liveguru.frontend.FrontEnd_TC_02_MobileMenu" />
+			<class name="com.liveguru.frontend.FrontEnd_Common_01_RegisterToSystem" />
+			<class name="com.liveguru.frontend.FrontEnd_TC_03_TVMenu" />
 		</classes>
 	</test>
 
