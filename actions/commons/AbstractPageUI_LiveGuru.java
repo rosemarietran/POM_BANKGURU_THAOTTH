@@ -20,4 +20,5 @@ public class AbstractPageUI_LiveGuru {
 	public static final String DYNAMIC_TEXTBOX_TEXTAREA = "//input[@title='%s']";
 	public static final String PRODUCT_VIEW_DETAIL_LINK = "//a[contains(text(),'%s')]";
 	public static final String DYNAMIC_TEXT_LINK = "//a[contains(text(),'%s')]";
+	public static final String DYNAMIC_BUTTON = "//button//span[contains(text(),'%s')]";
 }

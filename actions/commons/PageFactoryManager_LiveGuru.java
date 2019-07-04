@@ -6,6 +6,7 @@ import liveguru.pageObjects.AccountInformationPageObject;
 import liveguru.pageObjects.HomePageObject;
 import liveguru.pageObjects.LoginPageObject;
 import liveguru.pageObjects.MobilePageObject;
+import liveguru.pageObjects.MyWishlistPageObject;
 import liveguru.pageObjects.RegisterPageObject;
 import liveguru.pageObjects.TVPageObject;
 
@@ -32,6 +33,10 @@ public class PageFactoryManager_LiveGuru {
 	
 	public static TVPageObject getTVPage(WebDriver driver) {
 		return new TVPageObject(driver);
+	}
+	
+	public static MyWishlistPageObject getMyWishlistPage(WebDriver driver) {
+		return new MyWishlistPageObject(driver);
 	}
 
 }

@@ -18,7 +18,7 @@
 		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="com.liveguru.frontend.FrontEnd_Common_01_RegisterToSystem" />
-			<class name="com.liveguru.frontend.FrontEnd_TC_03_TVMenu" />
+			<class name="com.liveguru.frontend.FrontEnd_TC_02_MobileMenu" />
 		</classes>
 	</test>
 

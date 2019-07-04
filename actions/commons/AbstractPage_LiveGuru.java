@@ -477,6 +477,8 @@ public class AbstractPage_LiveGuru {
 		switch (pageName) {
 		case "Account Information":
 			return PageFactoryManager_LiveGuru.getAccountInformationPage(driver);
+		case "My Wishlist":
+			return PageFactoryManager_LiveGuru.getMyWishlistPage(driver);
 		default:
 			return PageFactoryManager_LiveGuru.getHomePage(driver);
 		}
